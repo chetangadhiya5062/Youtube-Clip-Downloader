@@ -4,6 +4,7 @@ import threading
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QLineEdit, QPushButton,
                             QFileDialog, QVBoxLayout, QHBoxLayout, QProgressBar,
                             QComboBox, QTextEdit, QSpinBox)
+from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 import yt_dlp
 
@@ -50,6 +51,7 @@ class SmartClipDownloader(QWidget):
         self.folder_label = QLabel("Save to:")
         self.folder_path = QLineEdit()
         self.browse_btn = QPushButton("Browse")
+        self.browse_btn.setIcon(QIcon('icons/folder.png'))
         self.browse_btn.clicked.connect(self.browse_folder)
         folder_layout = QHBoxLayout()
         folder_layout.addWidget(self.folder_path)
@@ -65,9 +67,22 @@ class SmartClipDownloader(QWidget):
         self.parallel_spin.setValue(2)
         main_layout.addWidget(self.parallel_label)
         main_layout.addWidget(self.parallel_spin)
+        
+        # Pause and Resume Buttons
+        self.pause_btn = QPushButton("Pause")
+        self.pause_btn.setIcon(QIcon('icons/pause.png'))
+        self.pause_btn.clicked.connect(self.pause_download)
+        main_layout.addWidget(self.pause_btn)
+
+        self.resume_btn = QPushButton("Resume")
+        self.resume_btn.setIcon(QIcon('icons/resume.png'))
+        self.resume_btn.clicked.connect(self.resume_download)
+        main_layout.addWidget(self.resume_btn)
+
 
         # Download Button
         self.download_btn = QPushButton("Start Download")
+        self.download_btn.setIcon(QIcon('icons/download.png'))
         self.download_btn.clicked.connect(self.start_download)
         main_layout.addWidget(self.download_btn)
 
@@ -103,6 +118,13 @@ class SmartClipDownloader(QWidget):
         thread = threading.Thread(target=self.download_clip,
                                 args=(url, start, end, quality, folder, parallel))
         thread.start()
+        
+    def pause_download(self):
+        print("Paused download (not fully implemented)")
+
+    def resume_download(self):
+        print("Resumed download (not fully implemented)")
+
 
     def download_clip(self, url, start, end, quality, folder, parallel):
         try:
